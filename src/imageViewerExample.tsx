@@ -1,9 +1,11 @@
-import { useEffect, useState } from "react";
-import styled from "styled-components";
-import "./App.css";
+import { useState } from "react";
 
-import { ImageProps, T } from "@admiral-ds/react-ui";
-import { ImageViewerExample } from "./imageViewerExample";
+import { ImageViewer } from "@admiral-ds/react-ui";
+import type {
+  ImageProps,
+  TransformAction,
+  TransformType,
+} from "@admiral-ds/react-ui";
 
 const handleError: React.ReactEventHandler<HTMLImageElement> = (e) => {
   // eslint-disable-next-line no-console
@@ -32,22 +34,29 @@ const items: ImageProps[] = [
     onError: handleError,
   },
 ];
+const handleTransform = (info: {
+  transform: TransformType;
+  action: TransformAction;
+}) => {
+  // eslint-disable-next-line no-console
+  console.log(info);
+};
 
-function App() {
+export const ImageViewerExample = () => {
+  const [activeImg, setActiveImg] = useState(0);
+
+  const handleActiveChange = (index: number) => {
+    setActiveImg(index);
+    // eslint-disable-next-line no-console
+    console.log("active image", index);
+  };
+
   return (
-    <div>
-      <T font="Header/HL1" as="p">
-        Admiral DS
-      </T>
-      <div className="card">
-        <T font="Subtitle/Subtitle 1" as="p">
-          Пример компонента
-        </T>
-        {/* Пример компонента */}
-        <ImageViewerExample />
-      </div>
-    </div>
+    <ImageViewer
+      activeImg={activeImg}
+      items={items}
+      onTransform={handleTransform}
+      onActiveChange={handleActiveChange}
+    />
   );
-}
-
-export default App;
+};
